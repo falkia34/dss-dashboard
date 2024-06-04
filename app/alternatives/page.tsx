@@ -1,3 +1,4 @@
+import { AlternativesList } from '@/presentation/components/alternatives';
 import { Metadata } from 'next';
 import { SectionHeader } from '@/presentation/components/shared';
 
@@ -10,6 +11,7 @@ export default async function AlternativesPage() {
   return (
     <>
       <SectionHeader title="Alternatives" />
+      <AlternativesList />
     </>
   );
 }

@@ -15,7 +15,7 @@ export class ClientRepositoryImpl implements ClientRepository {
   }
 
   public getSidebarExtendedState(): boolean {
-    return this.sessionStorageDataSource.get<boolean>('sidebar-extended');
+    return this.sessionStorageDataSource.get<boolean>('sidebar-extended') || false;
   }
 
   public setSidebarExtendedState(state: boolean): void {

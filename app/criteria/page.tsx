@@ -1,3 +1,4 @@
+import { CriteriaList } from '@/presentation/components/criteria';
 import { Metadata } from 'next';
 import { SectionHeader } from '@/presentation/components/shared';
 
@@ -10,6 +11,7 @@ export default async function CriteriaPage() {
   return (
     <>
       <SectionHeader title="Criteria" />
+      <CriteriaList />
     </>
   );
 }

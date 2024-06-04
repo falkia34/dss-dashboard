@@ -1,14 +1,31 @@
+'use client';
+
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { GetSidebarExtendedState, SetSidebarExtendedState } from '@/application/client';
+import {
+  GetAlternatives,
+  GetCriteria,
+  GetSidebarExtendedState,
+  SetAlternatives,
+  SetCriteria,
+  SetSidebarExtendedState,
+} from '@/application/client';
 import {
   LocalStorageDataSource,
   LocalStorageDataSourceImpl,
   SessionStorageDataSource,
   SessionStorageDataSourceImpl,
 } from '@/infrastructure/datasources/client';
-import { ClientRepository } from '@/domain/repositories';
-import { ClientRepositoryImpl } from '@/infrastructure/repositories';
+import {
+  AlternativesRepository,
+  ClientRepository,
+  CriteriaRepository,
+} from '@/domain/repositories';
+import {
+  AlternativesRepositoryImpl,
+  ClientRepositoryImpl,
+  CriteriaRepositoryImpl,
+} from '@/infrastructure/repositories';
 import { Symbols } from '@/config';
 
 export const clientContainer = new Container();
@@ -20,9 +37,17 @@ clientContainer
 clientContainer
   .bind<GetSidebarExtendedState>(Symbols.GetSidebarExtendedState)
   .to(GetSidebarExtendedState);
+clientContainer.bind<SetCriteria>(Symbols.SetCriteria).to(SetCriteria);
+clientContainer.bind<GetCriteria>(Symbols.GetCriteria).to(GetCriteria);
+clientContainer.bind<SetAlternatives>(Symbols.SetAlternatives).to(SetAlternatives);
+clientContainer.bind<GetAlternatives>(Symbols.GetAlternatives).to(GetAlternatives);
 
 // Repositories
+clientContainer
+  .bind<AlternativesRepository>(Symbols.AlternativesRepository)
+  .to(AlternativesRepositoryImpl);
 clientContainer.bind<ClientRepository>(Symbols.ClientRepository).to(ClientRepositoryImpl);
+clientContainer.bind<CriteriaRepository>(Symbols.CriteriaRepository).to(CriteriaRepositoryImpl);
 
 // Data sources
 clientContainer
