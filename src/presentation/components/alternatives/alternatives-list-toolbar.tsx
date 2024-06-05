@@ -1,25 +1,22 @@
-import { Alternative, Criterion } from '@/domain/entities';
+import { AlternativeUIDto, CriterionUIDto } from '@/presentation/dtos';
 import { AddRounded } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { GridRowsProp, GridRowModesModel, GridRowModes } from '@mui/x-data-grid';
+import { GridRowModesModel, GridRowModes } from '@mui/x-data-grid';
 import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
-  setRows: (
-    newRows: (
-      oldRows: GridRowsProp<Alternative & { isNew: boolean }>,
-    ) => GridRowsProp<Alternative & { isNew: boolean }>,
-  ) => void;
+  rows: AlternativeUIDto[];
+  criteria: CriterionUIDto[];
+  setRows: (newRows: AlternativeUIDto[]) => void;
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
-  criteria: Criterion[];
 };
 
-export function AlternativesListToolbar({ setRows, setRowModesModel, criteria }: Props) {
+export function AlternativesListToolbar({ rows, criteria, setRows, setRowModesModel }: Props) {
   const handleClick = () => {
     const id = uuidv4();
 
-    setRows((oldRows) => [
-      ...oldRows,
+    setRows([
+      ...rows,
       {
         id,
         name: '',

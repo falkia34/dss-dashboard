@@ -1,7 +1,9 @@
 'use client';
 
 import { AlternativesListToolbar } from './alternatives-list-toolbar';
+import { AlternativeUIDto } from '@/presentation/dtos';
 import { Box, Container, Toolbar, Typography } from '@mui/material';
+import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -12,41 +14,24 @@ import {
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
-  GridRowsProp,
   GridSlots,
 } from '@mui/x-data-grid';
-import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
-import { clientContainer } from '@/client-injection';
 import { Alternative } from '@/domain/entities';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
-import { GetAlternatives, GetCriteria, SetAlternatives } from '@/application/client';
-import { Symbols } from '@/config';
 import { useEffect, useState } from 'react';
+import { mainStore, useStore } from '@/presentation/hooks';
 
 type Props = {
-  initialData?: Alternative[];
+  initialData?: AlternativeUIDto[];
 };
 
 export function AlternativesList({ initialData }: Props) {
-  const getCriteria = clientContainer.get<GetCriteria>(Symbols.GetCriteria);
-  const getAlternatives = clientContainer.get<GetAlternatives>(Symbols.GetAlternatives);
-
-  const criteria = getCriteria.execute();
-  const [rows, setRows] = useState<GridRowsProp<Alternative & { isNew: boolean }>>(
-    initialData
-      ? initialData.map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          marks: datum.marks,
-          isNew: false,
-        }))
-      : getAlternatives.execute().map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          marks: datum.marks,
-          isNew: false,
-        })),
-  );
+  const [criteria, rows, setRows, getRows] = useStore(mainStore, (s) => [
+    s.criteria,
+    s.alternatives,
+    s.setAlternatives,
+    s.getAlternatives,
+  ]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -93,10 +78,8 @@ export function AlternativesList({ initialData }: Props) {
   };
 
   useEffect(() => {
-    const setAlternatives = clientContainer.get<SetAlternatives>(Symbols.SetAlternatives);
-
-    setAlternatives.execute(rows.map((row) => new Alternative(row.id, row.name, row.marks)));
-  }, [rows]);
+    initialData ? setRows(initialData) : getRows();
+  }, [setRows, getRows, initialData]);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -110,9 +93,10 @@ export function AlternativesList({ initialData }: Props) {
             Data
           </Typography>
           <AlternativesListToolbar
+            rows={rows}
+            criteria={criteria}
             setRows={setRows}
             setRowModesModel={setRowModesModel}
-            criteria={criteria}
           />
         </Toolbar>
         <DataGrid
@@ -128,7 +112,7 @@ export function AlternativesList({ initialData }: Props) {
               field: `marks.${criterion.name.toLowerCase()}`,
               type: 'number',
               headerName: criterion.name,
-              width: 100,
+              width: 120,
               editable: true,
               valueGetter: (_, row) => row.marks[criterion.name.toLowerCase()],
               valueSetter: (value, row) => ({

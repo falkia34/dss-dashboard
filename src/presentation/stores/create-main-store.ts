@@ -1,9 +1,16 @@
+import {
+  AlternativeUIDto,
+  AlternativeUIMapper,
+  CriterionUIDto,
+  CriterionUIMapper,
+} from '@/presentation/dtos';
 import { clientContainer } from '@/client-injection';
 import { createStore } from 'zustand';
-import { Criterion } from '@/domain/entities';
 import {
+  GetAlternatives,
   GetCriteria,
   GetSidebarExtendedState,
+  SetAlternatives,
   SetCriteria,
   SetSidebarExtendedState,
 } from '@/application/client';
@@ -14,7 +21,8 @@ export interface MainStates {
   sidebarOpened: boolean;
   sidebarExtended: boolean;
   sidebarHovered: boolean;
-  criteria: Criterion[];
+  criteria: CriterionUIDto[];
+  alternatives: AlternativeUIDto[];
 }
 
 export interface MainActions {
@@ -22,8 +30,10 @@ export interface MainActions {
   getSidebarExtendedState: () => void;
   setSidebarExtendedState: (state: boolean) => void;
   setSidebarHoveredState: (state: boolean) => void;
-  setCriteria: (state: Criterion[]) => void;
+  setCriteria: (state: CriterionUIDto[]) => void;
   getCriteria: () => void;
+  setAlternatives: (state: AlternativeUIDto[]) => void;
+  getAlternatives: () => void;
 }
 
 export function createMainStore(initStates?: Partial<MainStates>) {
@@ -33,6 +43,7 @@ export function createMainStore(initStates?: Partial<MainStates>) {
       sidebarExtended: true,
       sidebarHovered: false,
       criteria: [],
+      alternatives: [],
       ...initStates,
 
       setSidebarOpenedState: (state: boolean) => set(() => ({ sidebarOpened: state })),
@@ -52,16 +63,37 @@ export function createMainStore(initStates?: Partial<MainStates>) {
         set({ sidebarExtended: state });
       },
       setSidebarHoveredState: (state: boolean) => set(() => ({ sidebarHovered: state })),
-      setCriteria: (state: Criterion[]) => {
+      setCriteria: (state: CriterionUIDto[]) => {
         const setCriteria = clientContainer.get<SetCriteria>(Symbols.SetCriteria);
 
-        setCriteria.execute(state);
+        setCriteria.execute(state.map(CriterionUIMapper.toDomain));
         set({ criteria: state });
       },
       getCriteria: () => {
         const getCriteria = clientContainer.get<GetCriteria>(Symbols.GetCriteria);
+        const criteria = getCriteria.execute();
 
-        set({ criteria: getCriteria.execute() });
+        set({
+          criteria: criteria.map((criterion) =>
+            CriterionUIMapper.fromDomain(criterion, { isNew: false }),
+          ),
+        });
+      },
+      setAlternatives: (state: AlternativeUIDto[]) => {
+        const setAlternatives = clientContainer.get<SetAlternatives>(Symbols.SetAlternatives);
+
+        setAlternatives.execute(state.map(AlternativeUIMapper.toDomain));
+        set({ alternatives: state });
+      },
+      getAlternatives: () => {
+        const getAlternatives = clientContainer.get<GetAlternatives>(Symbols.GetAlternatives);
+        const alternatives = getAlternatives.execute();
+
+        set({
+          alternatives: alternatives.map((alternative) =>
+            AlternativeUIMapper.fromDomain(alternative, { isNew: false }),
+          ),
+        });
       },
     })),
   );

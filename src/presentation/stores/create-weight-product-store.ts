@@ -5,7 +5,11 @@ import { immer } from 'zustand/middleware/immer';
 import { mainStore } from '@/presentation/hooks';
 import { Symbols } from '@/config';
 import { WPCriterionWeight } from '@/domain/entities';
-import { WPCriterionWeightUIDto, WPCriterionWeightUIMapper } from '@/presentation/dtos';
+import {
+  CriterionUIMapper,
+  WPCriterionWeightUIDto,
+  WPCriterionWeightUIMapper,
+} from '@/presentation/dtos';
 
 export interface WeightProductStates {
   wpCriterionWeights: WPCriterionWeightUIDto[];
@@ -42,7 +46,7 @@ export function createWeightProductStore(initStates?: Partial<WeightProductState
 
         mainStore.getState().getCriteria();
 
-        const criteria = mainStore.getState().criteria;
+        const criteria = mainStore.getState().criteria.map(CriterionUIMapper.toDomain);
         const criterionWeights = getWPCriterionWeights.execute();
         const sumOfWeights = criterionWeights.reduce(
           (acc, criterionWeight) => acc + criterionWeight.weight,

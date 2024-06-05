@@ -1,6 +1,10 @@
 'use client';
 
 import { Box, Container, Toolbar, Typography } from '@mui/material';
+import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
+import { Criterion } from '@/domain/entities';
+import { CriteriaListToolbar } from './criteria-list-toolbar';
+import { CriterionUIDto } from '@/presentation/dtos';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -10,40 +14,22 @@ import {
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
-  GridRowsProp,
   GridSlots,
 } from '@mui/x-data-grid';
-import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
-import { clientContainer } from '@/client-injection';
-import { Criterion } from '@/domain/entities';
-import { CriteriaListToolbar } from './criteria-list-toolbar';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
-import { GetCriteria, SetCriteria } from '@/application/client';
-import { Symbols } from '@/config';
 import { useEffect, useState } from 'react';
+import { mainStore, useStore } from '@/presentation/hooks';
 
 type Props = {
-  initialData?: Criterion[];
+  initialData?: CriterionUIDto[];
 };
 
 export function CriteriaList({ initialData }: Props) {
-  const getCriteria = clientContainer.get<GetCriteria>(Symbols.GetCriteria);
-
-  const [rows, setRows] = useState<GridRowsProp<Criterion & { isNew: boolean }>>(
-    initialData
-      ? initialData.map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          type: datum.type,
-          isNew: false,
-        }))
-      : getCriteria.execute().map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          type: datum.type,
-          isNew: false,
-        })),
-  );
+  const [rows, setRows, getRows] = useStore(mainStore, (s) => [
+    s.criteria,
+    s.setCriteria,
+    s.getCriteria,
+  ]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -90,10 +76,8 @@ export function CriteriaList({ initialData }: Props) {
   };
 
   useEffect(() => {
-    const setCriteria = clientContainer.get<SetCriteria>(Symbols.SetCriteria);
-
-    setCriteria.execute(rows.map((row) => new Criterion(row.id, row.name, row.type)));
-  }, [rows]);
+    initialData ? setRows(initialData) : getRows();
+  }, [setRows, getRows, initialData]);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -106,7 +90,7 @@ export function CriteriaList({ initialData }: Props) {
           <Typography id="table-title" variant="h6" component="h2" className="font-medium">
             Configurations
           </Typography>
-          <CriteriaListToolbar setRows={setRows} setRowModesModel={setRowModesModel} />
+          <CriteriaListToolbar rows={rows} setRows={setRows} setRowModesModel={setRowModesModel} />
         </Toolbar>
         <DataGrid
           columns={[
