@@ -1,52 +1,34 @@
 'use client';
 
-import { AlternativesListToolbar } from './alternatives-list-toolbar';
 import { Box, Container, Toolbar, Typography } from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
-  GridColDef,
+  GridEditInputCell,
   GridEventListener,
   GridRowEditStopReasons,
   GridRowId,
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
-  GridRowsProp,
   GridSlots,
 } from '@mui/x-data-grid';
-import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
-import { clientContainer } from '@/client-injection';
-import { Alternative } from '@/domain/entities';
+import { CancelRounded, EditRounded, SaveRounded } from '@mui/icons-material';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
-import { GetAlternatives, GetCriteria, SetAlternatives } from '@/application/client';
-import { Symbols } from '@/config';
 import { useEffect, useState } from 'react';
+import { useStore, weightProductStore } from '@/presentation/hooks';
+import { WPCriterionWeightUIDto } from '@/presentation/dtos';
 
 type Props = {
-  initialData?: Alternative[];
+  initialData?: WPCriterionWeightUIDto[];
 };
 
-export function AlternativesList({ initialData }: Props) {
-  const getCriteria = clientContainer.get<GetCriteria>(Symbols.GetCriteria);
-  const getAlternatives = clientContainer.get<GetAlternatives>(Symbols.GetAlternatives);
-
-  const criteria = getCriteria.execute();
-  const [rows, setRows] = useState<GridRowsProp<Alternative & { isNew: boolean }>>(
-    initialData
-      ? initialData.map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          marks: datum.marks,
-          isNew: false,
-        }))
-      : getAlternatives.execute().map((datum) => ({
-          id: datum.id,
-          name: datum.name,
-          marks: datum.marks,
-          isNew: false,
-        })),
-  );
+export function CriteriaWeightList({ initialData }: Props) {
+  const [rows, setRows, getRows] = useStore(weightProductStore, (s) => [
+    s.wpCriterionWeights,
+    s.setWPCriterionWeights,
+    s.getWPCriterionWeights,
+  ]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -60,15 +42,14 @@ export function AlternativesList({ initialData }: Props) {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'weight' },
+    });
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -76,27 +57,25 @@ export function AlternativesList({ initialData }: Props) {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-
-    const editedRow = rows.find((row) => row.id === id);
-
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
   };
 
-  const processRowUpdate = (newRow: GridRowModel<Alternative & { isNew: boolean }>) => {
-    const updatedRow = { ...newRow, isNew: false };
+  const processRowUpdate = (newRow: GridRowModel<WPCriterionWeightUIDto>) => {
+    const sumOfWeights = rows.reduce(
+      (acc, row) => (row.id === newRow.id ? acc + newRow.weight : acc + row.weight),
+      0,
+    );
 
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    setRows(rows.map((row) => (row.id === newRow.id ? newRow : row)));
 
-    return updatedRow;
+    return {
+      ...newRow,
+      normalizedWeight: (newRow.weight / sumOfWeights) * (newRow.type === 'cost' ? -1 : 1),
+    };
   };
 
   useEffect(() => {
-    const setAlternatives = clientContainer.get<SetAlternatives>(Symbols.SetAlternatives);
-
-    setAlternatives.execute(rows.map((row) => new Alternative(row.id, row.name, row.marks)));
-  }, [rows]);
+    initialData ? setRows(initialData) : getRows();
+  }, [setRows, getRows, initialData]);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -107,13 +86,8 @@ export function AlternativesList({ initialData }: Props) {
       >
         <Toolbar className="min-h-[2.5rem] h-auto p-0 mb-4">
           <Typography id="table-title" variant="h6" component="h2" className="font-medium">
-            Data
+            Weight Configurations
           </Typography>
-          <AlternativesListToolbar
-            setRows={setRows}
-            setRowModesModel={setRowModesModel}
-            criteria={criteria}
-          />
         </Toolbar>
         <DataGrid
           columns={[
@@ -121,21 +95,43 @@ export function AlternativesList({ initialData }: Props) {
               field: 'name',
               headerName: 'Name',
               minWidth: 200,
-              flex: 2,
-              editable: true,
+              flex: 4,
             },
-            ...criteria.map<GridColDef>((criterion) => ({
-              field: `marks.${criterion.name.toLowerCase()}`,
+            {
+              field: 'type',
+              type: 'singleSelect',
+              headerName: 'Type',
+              minWidth: 100,
+              flex: 2,
+              valueOptions: [
+                { value: 'cost', label: 'Cost' },
+                { value: 'benefit', label: 'Benefit' },
+              ],
+            },
+            {
+              field: 'weight',
               type: 'number',
-              headerName: criterion.name,
-              width: 100,
+              headerName: 'Weight',
+              minWidth: 100,
+              flex: 1,
               editable: true,
-              valueGetter: (_, row) => row.marks[criterion.name.toLowerCase()],
-              valueSetter: (value, row) => ({
-                ...row,
-                marks: { ...row.marks, [criterion.name.toLowerCase()]: value },
-              }),
-            })),
+              renderEditCell: (params) => (
+                <GridEditInputCell
+                  {...params}
+                  inputProps={{
+                    max: 5,
+                    min: 1,
+                  }}
+                />
+              ),
+            },
+            {
+              field: 'normalizedWeight',
+              type: 'number',
+              headerName: 'Normalized',
+              minWidth: 100,
+              flex: 1,
+            },
             {
               field: 'actions',
               type: 'actions',
@@ -168,12 +164,6 @@ export function AlternativesList({ initialData }: Props) {
                     icon={<EditRounded />}
                     label="Edit"
                     onClick={handleEditClick(id)}
-                  />,
-                  <GridActionsCellItem
-                    key="delete"
-                    icon={<DeleteRounded />}
-                    label="Delete"
-                    onClick={handleDeleteClick(id)}
                   />,
                 ];
               },

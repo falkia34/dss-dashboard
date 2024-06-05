@@ -6,9 +6,11 @@ import {
   GetAlternatives,
   GetCriteria,
   GetSidebarExtendedState,
+  GetWPCriterionWeights,
   SetAlternatives,
   SetCriteria,
   SetSidebarExtendedState,
+  SetWPCriterionWeights,
 } from '@/application/client';
 import {
   LocalStorageDataSource,
@@ -20,11 +22,13 @@ import {
   AlternativesRepository,
   ClientRepository,
   CriteriaRepository,
+  WeightProductRepository,
 } from '@/domain/repositories';
 import {
   AlternativesRepositoryImpl,
   ClientRepositoryImpl,
   CriteriaRepositoryImpl,
+  WeightProductRepositoryImpl,
 } from '@/infrastructure/repositories';
 import { Symbols } from '@/config';
 
@@ -41,6 +45,12 @@ clientContainer.bind<SetCriteria>(Symbols.SetCriteria).to(SetCriteria);
 clientContainer.bind<GetCriteria>(Symbols.GetCriteria).to(GetCriteria);
 clientContainer.bind<SetAlternatives>(Symbols.SetAlternatives).to(SetAlternatives);
 clientContainer.bind<GetAlternatives>(Symbols.GetAlternatives).to(GetAlternatives);
+clientContainer
+  .bind<SetWPCriterionWeights>(Symbols.SetWPCriterionWeights)
+  .to(SetWPCriterionWeights);
+clientContainer
+  .bind<GetWPCriterionWeights>(Symbols.GetWPCriterionWeights)
+  .to(GetWPCriterionWeights);
 
 // Repositories
 clientContainer
@@ -48,6 +58,9 @@ clientContainer
   .to(AlternativesRepositoryImpl);
 clientContainer.bind<ClientRepository>(Symbols.ClientRepository).to(ClientRepositoryImpl);
 clientContainer.bind<CriteriaRepository>(Symbols.CriteriaRepository).to(CriteriaRepositoryImpl);
+clientContainer
+  .bind<WeightProductRepository>(Symbols.WeightProductRepository)
+  .to(WeightProductRepositoryImpl);
 
 // Data sources
 clientContainer

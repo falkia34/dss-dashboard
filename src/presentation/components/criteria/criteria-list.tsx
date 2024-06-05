@@ -26,11 +26,11 @@ type Props = {
   initialData?: Criterion[];
 };
 
-export function CriteriaList({ initialData = [] }: Props) {
+export function CriteriaList({ initialData }: Props) {
   const getCriteria = clientContainer.get<GetCriteria>(Symbols.GetCriteria);
 
   const [rows, setRows] = useState<GridRowsProp<Criterion & { isNew: boolean }>>(
-    initialData.length > 0
+    initialData
       ? initialData.map((datum) => ({
           id: datum.id,
           name: datum.name,

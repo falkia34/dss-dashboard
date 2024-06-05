@@ -1,5 +1,5 @@
 import type { LocalStorageDataSource } from '@/infrastructure/datasources/client';
-import { Alternative } from '@/domain/entities/alternative';
+import { Alternative } from '@/domain/entities';
 import { AlternativesRepository } from '@/domain/repositories';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '@/config';

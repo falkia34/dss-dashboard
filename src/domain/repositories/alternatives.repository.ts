@@ -1,4 +1,4 @@
-import { Alternative } from '@/domain/entities/alternative';
+import { Alternative } from '@/domain/entities';
 
 export interface AlternativesRepository {
   getAlternatives(): Alternative[];

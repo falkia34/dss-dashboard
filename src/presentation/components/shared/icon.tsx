@@ -5,6 +5,10 @@ import {
   PeopleRounded,
   SpaceDashboardOutlined,
   SpaceDashboardRounded,
+  InsightsRounded,
+  InsightsOutlined,
+  LooksOneOutlined,
+  LooksOneRounded,
 } from '@mui/icons-material';
 import { SvgIconProps } from '@mui/material';
 
@@ -14,10 +18,18 @@ type Props = {
 
 export function Icon({ name, ...props }: Props) {
   switch (name) {
+    case 'insights':
+      return <InsightsRounded {...props} />;
+    case 'insights-outlined':
+      return <InsightsOutlined {...props} />;
     case 'list':
       return <ListRounded {...props} />;
     case 'list-outlined':
       return <ListOutlined {...props} />;
+    case 'looks-one':
+      return <LooksOneRounded {...props} />;
+    case 'looks-one-outlined':
+      return <LooksOneOutlined {...props} />;
     case 'people':
       return <PeopleRounded {...props} />;
     case 'people-outlined':

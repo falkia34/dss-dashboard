@@ -6,11 +6,14 @@ export const Symbols = {
   GetCriteria: Symbol.for('GetCriteria'),
   SetAlternatives: Symbol.for('SetAlternatives'),
   GetAlternatives: Symbol.for('GetAlternatives'),
+  SetWPCriterionWeights: Symbol.for('SetWPCriterionWeights'),
+  GetWPCriterionWeights: Symbol.for('GetWPCriterionWeights'),
 
   // Repositories
   AlternativesRepository: Symbol.for('AlternativesRepository'),
   ClientRepository: Symbol.for('ClientRepository'),
   CriteriaRepository: Symbol.for('CriteriaRepository'),
+  WeightProductRepository: Symbol.for('WeightProductRepository'),
 
   // Data sources
   LocalStorageDataSource: Symbol.for('LocalStorageDataSource'),

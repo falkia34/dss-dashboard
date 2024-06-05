@@ -51,6 +51,17 @@ export const Config: {
         icon: 'people',
         path: '/alternatives',
       },
+      {
+        name: 'Analysis',
+        icon: 'insights',
+        items: [
+          {
+            name: 'Weighted Product',
+            icon: 'looks-one',
+            path: '/analysis/weighted-product',
+          },
+        ],
+      },
     ],
   },
 };
