@@ -1,4 +1,8 @@
-import { CriteriaWeightList, SVCalculationList } from '@/presentation/components/weighted-product';
+import {
+  CriteriaWeightList,
+  RankList,
+  SVCalculationList,
+} from '@/presentation/components/weighted-product';
 import { Metadata } from 'next';
 import { SectionHeader } from '@/presentation/components/shared';
 
@@ -13,6 +17,7 @@ export default async function WeightedProductPage() {
       <SectionHeader title="Weighted Product Analysis" />
       <CriteriaWeightList />
       <SVCalculationList />
+      <RankList />
     </>
   );
 }
