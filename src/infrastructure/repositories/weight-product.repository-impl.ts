@@ -1,8 +1,8 @@
-import type { LocalStorageDataSource } from '@/infrastructure/datasources/client';
-import { WPCriterionWeight } from '@/domain/entities';
-import { WeightProductRepository } from '@/domain/repositories';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '@/config';
+import { WeightProductRepository } from '@/domain/repositories';
+import { WPAlternativeVector, WPCriterionWeight } from '@/domain/entities';
+import type { LocalStorageDataSource } from '@/infrastructure/datasources/client';
 
 @injectable()
 export class WeightProductRepositoryImpl implements WeightProductRepository {
@@ -15,11 +15,22 @@ export class WeightProductRepositoryImpl implements WeightProductRepository {
     this.localStorageDataSource = localStorageDataSource;
   }
 
-  public getWPCriterionWeight(): WPCriterionWeight[] {
-    return this.localStorageDataSource.get<WPCriterionWeight[]>('wp-criteria-weight') || [];
+  public getWPCriterionWeights(): WPCriterionWeight[] {
+    return this.localStorageDataSource.get<WPCriterionWeight[]>('wp-criteria-weights') || [];
   }
 
-  public setWPCriterionWeight(criterionWeights: WPCriterionWeight[]): void {
-    this.localStorageDataSource.set<WPCriterionWeight[]>('wp-criteria-weight', criterionWeights);
+  public setWPCriterionWeights(criterionWeights: WPCriterionWeight[]): void {
+    this.localStorageDataSource.set<WPCriterionWeight[]>('wp-criteria-weights', criterionWeights);
+  }
+
+  public getWPAlternativeVectors(): WPAlternativeVector[] {
+    return this.localStorageDataSource.get<WPAlternativeVector[]>('wp-alternative-vectors') || [];
+  }
+
+  public setWPAlternativeVectors(alternativeVectors: WPAlternativeVector[]): void {
+    this.localStorageDataSource.set<WPAlternativeVector[]>(
+      'wp-alternative-vectors',
+      alternativeVectors,
+    );
   }
 }

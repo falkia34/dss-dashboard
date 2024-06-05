@@ -6,10 +6,12 @@ import {
   GetAlternatives,
   GetCriteria,
   GetSidebarExtendedState,
+  GetWPAlternativeVectors,
   GetWPCriterionWeights,
   SetAlternatives,
   SetCriteria,
   SetSidebarExtendedState,
+  SetWPAlternativeVectors,
   SetWPCriterionWeights,
 } from '@/application/client';
 import {
@@ -51,6 +53,12 @@ clientContainer
 clientContainer
   .bind<GetWPCriterionWeights>(Symbols.GetWPCriterionWeights)
   .to(GetWPCriterionWeights);
+clientContainer
+  .bind<GetWPAlternativeVectors>(Symbols.GetWPAlternativeVectors)
+  .to(GetWPAlternativeVectors);
+clientContainer
+  .bind<SetWPAlternativeVectors>(Symbols.SetWPAlternativeVectors)
+  .to(SetWPAlternativeVectors);
 
 // Repositories
 clientContainer

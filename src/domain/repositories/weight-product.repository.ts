@@ -1,6 +1,8 @@
-import { WPCriterionWeight } from '@/domain/entities';
+import { WPAlternativeVector, WPCriterionWeight } from '@/domain/entities';
 
 export interface WeightProductRepository {
-  getWPCriterionWeight(): WPCriterionWeight[];
-  setWPCriterionWeight(criterionWeights: WPCriterionWeight[]): void;
+  getWPCriterionWeights(): WPCriterionWeight[];
+  setWPCriterionWeights(criterionWeights: WPCriterionWeight[]): void;
+  getWPAlternativeVectors(): WPAlternativeVector[];
+  setWPAlternativeVectors(alternativeVectors: WPAlternativeVector[]): void;
 }

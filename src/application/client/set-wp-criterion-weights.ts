@@ -4,7 +4,7 @@ import { UseCase } from '@/application/shared';
 import { WPCriterionWeight } from '@/domain/entities';
 import type { WeightProductRepository } from '@/domain/repositories';
 
-export type SetWPCriterionWeightsParams = [wpCriterionWeight: WPCriterionWeight[]];
+export type SetWPCriterionWeightsParams = [wpCriterionWeights: WPCriterionWeight[]];
 
 @injectable()
 export class SetWPCriterionWeights implements UseCase<void, SetWPCriterionWeightsParams> {
@@ -17,7 +17,7 @@ export class SetWPCriterionWeights implements UseCase<void, SetWPCriterionWeight
     this.weightProductRepository = weightProductRepository;
   }
 
-  public execute(wpCriterionWeight: WPCriterionWeight[]): void {
-    this.weightProductRepository.setWPCriterionWeight(wpCriterionWeight);
+  public execute(wpCriterionWeights: WPCriterionWeight[]): void {
+    this.weightProductRepository.setWPCriterionWeights(wpCriterionWeights);
   }
 }

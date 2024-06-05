@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { Symbols } from '@/config';
 import { UseCase } from '@/application/shared';
-import { WPCriterionWeight } from '@/domain/entities';
+import { WPAlternativeVector } from '@/domain/entities';
 import type { WeightProductRepository } from '@/domain/repositories';
 
 @injectable()
-export class GetWPCriterionWeights implements UseCase<WPCriterionWeight[]> {
+export class GetWPAlternativeVectors implements UseCase<WPAlternativeVector[]> {
   private readonly weightProductRepository: WeightProductRepository;
 
   public constructor(
@@ -15,7 +15,7 @@ export class GetWPCriterionWeights implements UseCase<WPCriterionWeight[]> {
     this.weightProductRepository = weightProductRepository;
   }
 
-  public execute(): WPCriterionWeight[] {
-    return this.weightProductRepository.getWPCriterionWeights();
+  public execute(): WPAlternativeVector[] {
+    return this.weightProductRepository.getWPAlternativeVectors();
   }
 }

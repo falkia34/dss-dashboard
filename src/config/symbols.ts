@@ -8,6 +8,8 @@ export const Symbols = {
   GetAlternatives: Symbol.for('GetAlternatives'),
   SetWPCriterionWeights: Symbol.for('SetWPCriterionWeights'),
   GetWPCriterionWeights: Symbol.for('GetWPCriterionWeights'),
+  SetWPAlternativeVectors: Symbol.for('SetWPAlternativeVectors'),
+  GetWPAlternativeVectors: Symbol.for('GetWPAlternativeVectors'),
 
   // Repositories
   AlternativesRepository: Symbol.for('AlternativesRepository'),
