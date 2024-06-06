@@ -24,7 +24,7 @@ export function SVCalculationList({ initialData }: Props) {
   useEffect(() => {
     getCriteria();
     initialData ? setRows(initialData) : getRows();
-  }, [getCriteria, setRows, getRows, initialData]);
+  }, [initialData, setRows, getRows, getCriteria]);
 
   return (
     <Box component="section" className="w-full px-6 mt-5">
@@ -52,10 +52,10 @@ export function SVCalculationList({ initialData }: Props) {
               type: 'number',
               headerName: criterion.name,
               width: 120,
-              valueGetter: (_, row) => row.marks[criterion.name.toLowerCase()],
+              valueGetter: (_, row) => row.marks[criterion.id],
               valueSetter: (value, row) => ({
                 ...row,
-                marks: { ...row.marks, [criterion.name.toLowerCase()]: value },
+                marks: { ...row.marks, [criterion.id]: value },
               }),
             })),
             {

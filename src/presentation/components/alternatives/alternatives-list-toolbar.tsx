@@ -20,7 +20,7 @@ export function AlternativesListToolbar({ rows, criteria, setRows, setRowModesMo
       {
         id,
         name: '',
-        marks: Object.fromEntries(criteria.map((criterion) => [criterion.name.toLowerCase(), 0])),
+        marks: Object.fromEntries(criteria.map((criterion) => [criterion.id, 0])),
         isNew: true,
       },
     ]);

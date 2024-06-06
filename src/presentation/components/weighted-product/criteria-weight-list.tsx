@@ -75,7 +75,7 @@ export function CriteriaWeightList({ initialData }: Props) {
 
   useEffect(() => {
     initialData ? setRows(initialData) : getRows();
-  }, [setRows, getRows, initialData]);
+  }, [initialData, setRows, getRows]);
 
   return (
     <Box component="section" className="w-full px-6">

@@ -95,9 +95,7 @@ export function createWeightProductStore(initStates?: Partial<WeightProductState
         const sVectors = alternatives.map((alternative) => {
           return criterionWeights.reduce(
             (acc, criterionWeight) =>
-              acc *
-              alternative.marks[criterionWeight.name.toLowerCase()] **
-                criterionWeight.normalizedWeight,
+              acc * alternative.marks[criterionWeight.id] ** criterionWeight.normalizedWeight,
             1,
           );
         });

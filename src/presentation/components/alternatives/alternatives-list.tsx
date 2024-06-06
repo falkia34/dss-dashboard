@@ -26,11 +26,12 @@ type Props = {
 };
 
 export function AlternativesList({ initialData }: Props) {
-  const [criteria, rows, setRows, getRows] = useStore(mainStore, (s) => [
-    s.criteria,
+  const [rows, setRows, getRows, criteria, getCriteria] = useStore(mainStore, (s) => [
     s.alternatives,
     s.setAlternatives,
     s.getAlternatives,
+    s.criteria,
+    s.getCriteria,
   ]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
@@ -78,8 +79,9 @@ export function AlternativesList({ initialData }: Props) {
   };
 
   useEffect(() => {
+    getCriteria();
     initialData ? setRows(initialData) : getRows();
-  }, [setRows, getRows, initialData]);
+  }, [initialData, setRows, getRows, getCriteria]);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -114,10 +116,10 @@ export function AlternativesList({ initialData }: Props) {
               headerName: criterion.name,
               width: 120,
               editable: true,
-              valueGetter: (_, row) => row.marks[criterion.name.toLowerCase()],
+              valueGetter: (_, row) => row.marks[criterion.id],
               valueSetter: (value, row) => ({
                 ...row,
-                marks: { ...row.marks, [criterion.name.toLowerCase()]: value },
+                marks: { ...row.marks, [criterion.id]: value },
               }),
             })),
             {
