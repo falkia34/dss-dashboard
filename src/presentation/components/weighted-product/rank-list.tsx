@@ -1,7 +1,12 @@
 'use client';
 
 import { Box, Container, Toolbar, Typography } from '@mui/material';
-import { DataGrid, GridSlots } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridSlots,
+  gridPaginatedVisibleSortedGridRowEntriesSelector,
+  gridPaginationRowRangeSelector,
+} from '@mui/x-data-grid';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
 import { useStore, weightProductStore } from '@/presentation/hooks';
 import { useEffect } from 'react';
@@ -41,7 +46,15 @@ export function RankList({ initialData }: Props) {
               headerName: '#',
               filterable: false,
               width: 60,
-              renderCell: (index) => index.api.getRowIndexRelativeToVisibleRows(index.row.id) + 1,
+              renderCell: (param) => {
+                const { id, api } = param;
+                const apiRef = { current: api };
+                const range = gridPaginationRowRangeSelector(apiRef);
+                const rows = gridPaginatedVisibleSortedGridRowEntriesSelector(apiRef);
+                const index = rows.findIndex((r) => r.id === id);
+
+                return index === -1 ? '-' : range!.firstRowIndex + index + 1;
+              },
             },
             {
               field: 'name',
