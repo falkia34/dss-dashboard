@@ -36,7 +36,7 @@ export function Conclusion({ initialData }: Props) {
 
         <Typography component="p">
           {sortedRows.length
-            ? `So, the best alternatives is ${sortedRows[0].name} with preference value of ${Math.round((sortedRows[0].vVector + Number.EPSILON) * 1000) / 1000}.`
+            ? `So, the best alternatives is ${sortedRows[0].name} with preference value of ${sortedRows[0].vVector.toFixed(5)}.`
             : 'No alternatives to compare.'}
         </Typography>
       </Container>

@@ -64,6 +64,7 @@ export function SVCalculationList({ initialData }: Props) {
               headerName: 'S-Vector',
               minWidth: 120,
               flex: 1,
+              valueFormatter: (value) => (value as number).toFixed(5),
             },
             {
               field: 'vVector',
@@ -71,6 +72,7 @@ export function SVCalculationList({ initialData }: Props) {
               headerName: 'V-Vector',
               minWidth: 120,
               flex: 1,
+              valueFormatter: (value) => (value as number).toFixed(5),
             },
           ]}
           rows={rows}

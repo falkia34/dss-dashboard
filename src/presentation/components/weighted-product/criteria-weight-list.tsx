@@ -131,6 +131,7 @@ export function CriteriaWeightList({ initialData }: Props) {
               headerName: 'Normalized',
               minWidth: 100,
               flex: 1,
+              valueFormatter: (value) => (value as number).toFixed(3),
             },
             {
               field: 'actions',
