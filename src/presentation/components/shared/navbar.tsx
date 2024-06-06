@@ -20,12 +20,12 @@ export function Navbar({ menus }: Props) {
             }
           })}
       </List>
-      <Typography className="hidden mr-4 md:block">DSS User</Typography>
+      <Typography className="hidden mr-4 md:block">User</Typography>
       <Avatar
         variant="circular"
         sizes="32px"
         src="/assets/img/profile.png"
-        alt="DSS User"
+        alt="User"
         className="m-1 w-8 h-8 md:m-0"
       />
     </nav>
