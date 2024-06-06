@@ -14,12 +14,19 @@ type Props = {
 
 export function SVCalculationList({ initialData }: Props) {
   const [criteria, getCriteria] = useStore(mainStore, (s) => [s.criteria, s.getCriteria]);
-  const [rows, setRows, getRows, calculateRows] = useStore(weightProductStore, (s) => [
-    s.wpAlternativeVectors,
-    s.setWPAlternativeVectors,
-    s.getWPAlternativeVectors,
-    s.calculateWPAlternativeVectors,
-  ]);
+  const [rows, setRows, getRows, calculateWPAlternativeVectors] = useStore(
+    weightProductStore,
+    (s) => [
+      s.wpAlternativeVectors,
+      s.setWPAlternativeVectors,
+      s.getWPAlternativeVectors,
+      s.calculateWPAlternativeVectors,
+    ],
+  );
+
+  const calculateRows = () => {
+    setRows(calculateWPAlternativeVectors(rows));
+  };
 
   useEffect(() => {
     getCriteria();
