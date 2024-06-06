@@ -1,4 +1,5 @@
 import {
+  Conclusion,
   CriteriaWeightList,
   RankList,
   SVCalculationList,
@@ -18,6 +19,7 @@ export default async function WeightedProductPage() {
       <CriteriaWeightList />
       <SVCalculationList />
       <RankList />
+      <Conclusion />
     </>
   );
 }
