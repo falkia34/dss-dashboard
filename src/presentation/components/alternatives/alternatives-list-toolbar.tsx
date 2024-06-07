@@ -52,6 +52,8 @@ export function AlternativesListToolbar({
         Object.keys(rowModesModel).map((rowId) => [rowId, { mode: GridRowModes.View }]),
       ),
     );
+
+    setRows(rows.map((row) => ({ ...row, isNew: false })));
   };
 
   const handleCancelClick = () => {
