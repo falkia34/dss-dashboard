@@ -2,7 +2,6 @@
 
 import { Box, Container, Toolbar, Typography } from '@mui/material';
 import { CancelRounded, DeleteRounded, EditRounded, SaveRounded } from '@mui/icons-material';
-import { Criterion } from '@/domain/entities';
 import { CriteriaListToolbar } from './criteria-list-toolbar';
 import { CriterionUIDto } from '@/presentation/dtos';
 import {
@@ -67,7 +66,7 @@ export function CriteriaList({ initialData }: Props) {
     }
   };
 
-  const processRowUpdate = (newRow: GridRowModel<Criterion & { isNew: boolean }>) => {
+  const processRowUpdate = (newRow: GridRowModel<CriterionUIDto>) => {
     const updatedRow = { ...newRow, isNew: false };
 
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));

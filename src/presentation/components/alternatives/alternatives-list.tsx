@@ -16,7 +16,6 @@ import {
   GridRowModesModel,
   GridSlots,
 } from '@mui/x-data-grid';
-import { Alternative } from '@/domain/entities';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
 import { useEffect, useState } from 'react';
 import { mainStore, useStore } from '@/presentation/hooks';
@@ -70,7 +69,7 @@ export function AlternativesList({ initialData }: Props) {
     }
   };
 
-  const processRowUpdate = (newRow: GridRowModel<Alternative & { isNew: boolean }>) => {
+  const processRowUpdate = (newRow: GridRowModel<AlternativeUIDto>) => {
     const updatedRow = { ...newRow, isNew: false };
 
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
