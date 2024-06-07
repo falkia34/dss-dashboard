@@ -1,18 +1,30 @@
 import { AlternativeUIDto, CriterionUIDto } from '@/presentation/dtos';
-import { AddRounded } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { AddRounded, CancelRounded, EditRounded, SaveRounded } from '@mui/icons-material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import { GridRowModesModel, GridRowModes } from '@mui/x-data-grid';
+import { SetStateAction } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   rows: AlternativeUIDto[];
+  rowModesModel: GridRowModesModel;
   criteria: CriterionUIDto[];
   setRows: (newRows: AlternativeUIDto[]) => void;
-  setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
+  setRowModesModel: (newModel: SetStateAction<GridRowModesModel>) => void;
 };
 
-export function AlternativesListToolbar({ rows, criteria, setRows, setRowModesModel }: Props) {
-  const handleClick = () => {
+export function AlternativesListToolbar({
+  rows,
+  rowModesModel,
+  criteria,
+  setRows,
+  setRowModesModel,
+}: Props) {
+  const isInEditMode = Object.values(rowModesModel).some(
+    (rowMode) => rowMode.mode === GridRowModes.Edit,
+  );
+
+  const handleAddClick = () => {
     const id = uuidv4();
 
     setRows([
@@ -30,16 +42,56 @@ export function AlternativesListToolbar({ rows, criteria, setRows, setRowModesMo
     }));
   };
 
+  const handleEditClick = () => {
+    setRowModesModel(Object.fromEntries(rows.map((row) => [row.id, { mode: GridRowModes.Edit }])));
+  };
+
+  const handleSaveClick = () => {
+    setRowModesModel(
+      Object.fromEntries(
+        Object.keys(rowModesModel).map((rowId) => [rowId, { mode: GridRowModes.View }]),
+      ),
+    );
+  };
+
+  const handleCancelClick = () => {
+    setRowModesModel(
+      Object.fromEntries(
+        Object.keys(rowModesModel).map((rowId) => [
+          rowId,
+          { mode: GridRowModes.View, ignoreModifications: true },
+        ]),
+      ),
+    );
+  };
+
   return (
-    <>
-      <Button
-        variant="outlined"
-        className="ml-auto"
-        startIcon={<AddRounded />}
-        onClick={handleClick}
-      >
-        Add record
-      </Button>
-    </>
+    <Box className="ml-auto">
+      <Tooltip title="Add alternative">
+        <IconButton className="ml-4" aria-label="Add alternative" onClick={handleAddClick}>
+          <AddRounded />
+        </IconButton>
+      </Tooltip>
+      {isInEditMode ? (
+        <>
+          <Tooltip title="Save all">
+            <IconButton className="ml-2" aria-label="Save all" onClick={handleSaveClick}>
+              <SaveRounded />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Cancel all">
+            <IconButton className="ml-2" aria-label="Cancel all" onClick={handleCancelClick}>
+              <CancelRounded />
+            </IconButton>
+          </Tooltip>
+        </>
+      ) : (
+        <Tooltip title="Edit all">
+          <IconButton className="ml-2" aria-label="Edit all" onClick={handleEditClick}>
+            <EditRounded />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Box>
   );
 }

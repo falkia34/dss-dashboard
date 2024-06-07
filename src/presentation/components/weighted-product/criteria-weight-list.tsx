@@ -14,6 +14,7 @@ import {
   GridSlots,
 } from '@mui/x-data-grid';
 import { CancelRounded, EditRounded, SaveRounded } from '@mui/icons-material';
+import { CriteriaWeightListToolbar } from './criteria-weight-list-toolbar';
 import { EmptyRowOverlay } from '@/presentation/components/shared';
 import { useEffect, useState } from 'react';
 import { useStore, weightProductStore } from '@/presentation/hooks';
@@ -88,6 +89,11 @@ export function CriteriaWeightList({ initialData }: Props) {
           <Typography id="table-title" variant="h6" component="h2" className="font-medium">
             Weight Configurations
           </Typography>
+          <CriteriaWeightListToolbar
+            rows={rows}
+            rowModesModel={rowModesModel}
+            setRowModesModel={setRowModesModel}
+          />
         </Toolbar>
         <DataGrid
           columns={[
