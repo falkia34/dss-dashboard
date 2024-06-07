@@ -48,6 +48,8 @@ export function CriteriaListToolbar({ rows, rowModesModel, setRows, setRowModesM
         ]),
       ),
     );
+
+    setRows(rows.filter((r) => !r.isNew));
   };
 
   return (

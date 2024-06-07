@@ -63,6 +63,8 @@ export function AlternativesListToolbar({
         ]),
       ),
     );
+
+    setRows(rows.filter((r) => !r.isNew));
   };
 
   return (
