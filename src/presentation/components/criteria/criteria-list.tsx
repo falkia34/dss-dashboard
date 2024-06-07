@@ -77,7 +77,8 @@ export function CriteriaList({ initialData }: Props) {
 
   useEffect(() => {
     initialData ? setRows(initialData) : getRows();
-  }, [initialData, setRows, getRows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -90,7 +91,12 @@ export function CriteriaList({ initialData }: Props) {
           <Typography id="table-title" variant="h6" component="h2" className="font-medium">
             Configurations
           </Typography>
-          <CriteriaListToolbar rows={rows} setRows={setRows} setRowModesModel={setRowModesModel} />
+          <CriteriaListToolbar
+            rows={rows}
+            rowModesModel={rowModesModel}
+            setRows={setRows}
+            setRowModesModel={setRowModesModel}
+          />
         </Toolbar>
         <DataGrid
           columns={[

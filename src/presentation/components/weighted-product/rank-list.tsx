@@ -25,7 +25,8 @@ export function RankList({ initialData }: Props) {
 
   useEffect(() => {
     initialData ? setRows(initialData) : getRows();
-  }, [initialData, setRows, getRows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box component="section" className="w-full px-6 mt-5">

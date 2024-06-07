@@ -49,7 +49,8 @@ export function Sidebar({ menus }: Props) {
 
   useEffect(() => {
     getSidebarExtendedState();
-  }, [getSidebarExtendedState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

@@ -81,7 +81,8 @@ export function AlternativesList({ initialData }: Props) {
   useEffect(() => {
     getCriteria();
     initialData ? setRows(initialData) : getRows();
-  }, [initialData, setRows, getRows, getCriteria]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box component="section" className="w-full px-6">
@@ -96,6 +97,7 @@ export function AlternativesList({ initialData }: Props) {
           </Typography>
           <AlternativesListToolbar
             rows={rows}
+            rowModesModel={rowModesModel}
             criteria={criteria}
             setRows={setRows}
             setRowModesModel={setRowModesModel}
