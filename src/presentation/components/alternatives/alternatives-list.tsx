@@ -96,7 +96,6 @@ export function AlternativesList({ initialData }: Props) {
           </Typography>
           <AlternativesListToolbar
             rows={rows}
-            rowModesModel={rowModesModel}
             criteria={criteria}
             setRows={setRows}
             setRowModesModel={setRowModesModel}

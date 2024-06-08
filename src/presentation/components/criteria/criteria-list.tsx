@@ -90,12 +90,7 @@ export function CriteriaList({ initialData }: Props) {
           <Typography id="table-title" variant="h6" component="h2" className="font-medium">
             Configurations
           </Typography>
-          <CriteriaListToolbar
-            rows={rows}
-            rowModesModel={rowModesModel}
-            setRows={setRows}
-            setRowModesModel={setRowModesModel}
-          />
+          <CriteriaListToolbar rows={rows} setRows={setRows} setRowModesModel={setRowModesModel} />
         </Toolbar>
         <DataGrid
           columns={[
