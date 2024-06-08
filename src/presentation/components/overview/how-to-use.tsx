@@ -14,14 +14,7 @@ export function HowToUse() {
           </Typography>
         </Toolbar>
         <Typography variant="body2" component="p" className="text-justify">
-          The Weighted Product (WP) method is a multi-criteria decision-making technique that
-          evaluates alternatives based on their weighted performance across multiple criteria. It
-          calculates a preference value for each alternative by multiplying the performance of each
-          criterion by its corresponding weight and summing the results. The alternative with the
-          highest preference value is considered the best choice. This method is especially useful
-          in contexts where decisions have to be made based on a variety of different factors, each
-          with its own level of importance. Here are some of the main reasons why the WP method is
-          often used:
+          To use this tool, follow these steps:
           <ol className="my-1 text-left">
             <li>
               Select the <i>Criteria</i> menu.
