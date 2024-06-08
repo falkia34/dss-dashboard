@@ -38,7 +38,6 @@ export function AlternativesListToolbar({ rows, criteria, setRows, setRowModesMo
           <AddRounded />
         </IconButton>
       </Tooltip>
-      Add record
     </Box>
   );
 }
