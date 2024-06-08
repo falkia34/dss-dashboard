@@ -1,5 +1,6 @@
 import { NestedMenu, PathMenu, UrlMenu } from '@/domain/entities';
 
+export * from './auth';
 export * from './fonts';
 export * from './symbols';
 export * from './themes';

@@ -11,6 +11,9 @@ export const Symbols = {
   SetWPAlternativeVectors: Symbol.for('SetWPAlternativeVectors'),
   GetWPAlternativeVectors: Symbol.for('GetWPAlternativeVectors'),
 
+  // Controllers
+  NextAuthController: Symbol.for('NextAuthController'),
+
   // Repositories
   AlternativesRepository: Symbol.for('AlternativesRepository'),
   ClientRepository: Symbol.for('ClientRepository'),
