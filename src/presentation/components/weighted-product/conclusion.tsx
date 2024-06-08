@@ -30,12 +30,12 @@ export function Conclusion({ initialData }: Props) {
         className="w-full p-4 rounded-2xl"
       >
         <Toolbar className="min-h-[2.5rem] h-auto p-0 mb-4">
-          <Typography id="table-title" variant="h6" component="h2" className="font-medium">
+          <Typography variant="h6" component="h2" className="font-medium">
             Conclusion
           </Typography>
         </Toolbar>
 
-        <Typography component="p">
+        <Typography variant="body2" component="p">
           {sortedRows.length
             ? `So, the best alternatives is ${sortedRows[0].name} with preference value of ${sortedRows[0].vVector.toFixed(5)}.`
             : 'No alternatives to compare.'}
