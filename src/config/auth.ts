@@ -47,7 +47,6 @@ export const Auth = NextAuth({
     signIn: '/login',
     signOut: '/logout',
     error: '/login',
-    verifyRequest: '/verify-request',
   },
   basePath: '/auth',
 });

@@ -11,7 +11,9 @@ export default async function LogoutPage() {
   const session = await Auth.auth();
 
   if (!session) {
-    redirect('/');
+    const callbackUrl = encodeURIComponent('/');
+
+    redirect(`/login?callbackUrl=${callbackUrl}`);
   }
 
   return (
